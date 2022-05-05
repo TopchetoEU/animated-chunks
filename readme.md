@@ -1,33 +1,22 @@
-<p align="center">
-<a href="https://github.com/fl0gic/smooth-chunks/blob/master/LICENSE"><img src="https://img.shields.io/github/license/fl0gic/smooth-chunks?style=for-the-badge"></a>
-<img src="https://img.shields.io/github/v/tag/fl0gic/smooth-chunks?include_prereleases&label=version&style=for-the-badge">
-<img src="https://img.shields.io/github/workflow/status/fl0gic/smooth-chunks/gradle-build?style=for-the-badge">
-<img src="https://cf.way2muchnoise.eu/full_smooth-chunks_downloads.svg?badge_style=for_the_badge">
-<img src="https://cf.way2muchnoise.eu/versions/smooth-chunks_latest.svg?badge_style=for_the_badge">
-<a href="https://fabricmc.net"><img src="https://img.shields.io/badge/modloader-fabric-blue?style=for-the-badge"></a>
-</p>
+# Smooth chunks
 
-<p align="center">
-  <img width="384" height="384" src="https://github.com/fl0gic/smooth-chunks/blob/543cb55c7fa0397a437260254b0a74dde2ebc6a0/src/main/resources/assets/smooth-chunks/icon.png?raw=true">
-</p>
+NOTE: This is a fork of [cadenkriese](https://github.com/cadenkriese/smooth-chunks)'s mod
 
-<h1 align="center">Smooth Chunks</h1>
-<p align="center">Chunk loading in Minecraft can be very jagged when they appear out of nowhere. With this mod, you can configure a nice animation for how chunks load in to your world.</p>
+## What is this?
 
-## Animations
+This is a mod that adds animations of currently loading chunks. This makes chunk loading generally seem much more pleasant than them appearing out of thin air. There are multiple built-in animations, but this mod will be made so you can configure your own custom animations.
 
-### Upward
-![Gif of upward loading](media/showcase-gifs/upward.gif)
+Generally, this is what you'd call a "eye-candy" mod.
 
-### Downward
-![Gif of upward loading](media/showcase-gifs/downward.gif)
+## Currently supported animations:
 
-### Inward
-![Gif of upward loading](media/showcase-gifs/inward.gif)
+- Fade (like in bedrock) (planned)
+- Rise (planned)
+- Fall (planned)
+- Scale (planned)
+- Random (columns of blocks will randomly appear) (planned)
 
-### Scale
-![Gif of upward loading](media/showcase-gifs/scale.gif)
+## Future plans:
 
-## Incompatibilities
+In the future, I plan to extend the scope of this mod to not only smoothen the chunk loading, but entity spawning / despawning / dying, liquids, crops growing, etc.
 
-Unfortunately the mod is incompatible with Sodium and OptiFine/OptiFabric at this time. I'd like to add support for them eventually though. I also assume that the mod is incompatible with many other rendering focused mods such as Canvas, though I haven't tested it.
