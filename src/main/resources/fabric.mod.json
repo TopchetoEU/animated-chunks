@@ -1,0 +1,29 @@
+{
+    "schemaVersion": 1,
+    "id": "smooth-chunks",
+    "version": "0.1.0",
+    "name": "Smooth Chunks",
+    "description": "Smooth chunk load animations.",
+    "authors": [ "TopchetoEU" ],
+    "license": "MIT",
+    "icon": "assets/smooth-chunks/icon.png",
+    "environment": "client",
+    "accessWidener": "smooth-chunks.accesswidener",
+    "entrypoints": {
+        "client": [
+            "me.topchetoeu.smoothchunks.SmoothChunks"
+        ],
+        "modmenu": [
+            "me.topchetoeu.smoothchunks.SmoothChunks"
+        ]
+    },
+    "mixins": [
+        "smooth-chunks.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.9.3+build.207",
+        "fabric": "*",
+        "minecraft": ">=1.18.2",
+        "modmenu": ">=3.2.1"
+    }
+}
