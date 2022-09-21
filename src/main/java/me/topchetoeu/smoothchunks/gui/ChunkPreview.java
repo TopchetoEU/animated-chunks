@@ -116,8 +116,6 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         p3.multiply(1 / p3.getW());
         p4.multiply(1 / p4.getW());
 
-        // System.out.println(p1.getZ());
-
         if (checkZ(p1.getZ()) && checkZ(p2.getZ()) && checkZ(p3.getZ()) && checkZ(p4.getZ())) {
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             RenderSystem.enableBlend();

@@ -91,7 +91,6 @@ public class SelectionScreen<T> extends Screen {
                 drawHorizontalLine(matrices, 15, width - 15, (int)y2 - 5, 0xFFFFFFFF);
                 drawVerticalLine(matrices, 15, y1 - 3, y2 - 5, 0xFFFFFFFF);
                 drawVerticalLine(matrices, width - 15, y1 - 3, y2 - 5, 0xFFFFFFFF);
-                System.out.println(hoveredElement.getName());
                 break;
             }
 
@@ -115,7 +114,6 @@ public class SelectionScreen<T> extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0 && hoveredElement != null) {
-            System.out.print(hoveredElement.getName());
             selectAction.onSelect(hoveredElement);
             selectedElement = hoveredElement;
             close();
