@@ -128,8 +128,7 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
             bufferBuilder.vertex(p2.getX(), p2.getY(), p2.getZ()).color(r, g, b, a).next();
             bufferBuilder.vertex(p3.getX(), p3.getY(), p3.getZ()).color(r, g, b, a).next();
             bufferBuilder.vertex(p4.getX(), p4.getY(), p4.getZ()).color(r, g, b, a).next();
-            bufferBuilder.end();
-            BufferRenderer.draw(bufferBuilder);
+            BufferRenderer.drawWithShader(bufferBuilder.end());
             RenderSystem.enableTexture();
             RenderSystem.disableBlend();
         }

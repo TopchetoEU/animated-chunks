@@ -7,8 +7,8 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.Shader;
-import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 import net.minecraft.client.render.chunk.ChunkBuilder.BuiltChunk;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
@@ -53,9 +53,9 @@ abstract class WorldRendererMixin {
 
         getProgressManager().unloadAllFar((int)((WorldRenderer)(Object)this).getViewDistance(), chunkX, chunkY, chunkZ);
     }
-    @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/VertexBuffer;drawVertices()V"), locals=LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/VertexBuffer;drawElements()V"), locals=LocalCapture.CAPTURE_FAILHARD)
     private void renderChunkBefore(RenderLayer renderLayer, MatrixStack matrices, double playerX, double playerY, double playerZ, Matrix4f positionMatrix, CallbackInfo ci,
-            boolean _1, ObjectListIterator<?> _2, VertexFormat _3, Shader shader, GlUniform _4, boolean _5, WorldRenderer.ChunkInfo _6, BuiltChunk chunk) {
+            boolean _1, ObjectListIterator<?> _2, Shader shader, GlUniform _4, ChunkInfo _6, BuiltChunk chunk) {
 
         matrices.push();
 
@@ -88,9 +88,9 @@ abstract class WorldRendererMixin {
         matrices.pop();
         shader.bind();
     }
-    @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/VertexBuffer;drawVertices()V"), locals=LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gl/VertexBuffer;drawElements()V"), locals=LocalCapture.CAPTURE_FAILHARD)
     private void renderChunkAfter(RenderLayer renderLayer, MatrixStack matrices, double playerX, double playerY, double playerZ, Matrix4f positionMatrix, CallbackInfo ci,
-            boolean _1, ObjectListIterator<?> _2, VertexFormat _3, Shader _4, GlUniform _5, boolean _6, WorldRenderer.ChunkInfo _7, BuiltChunk chunk) {
+            boolean _1, ObjectListIterator<?> _2, Shader shader, GlUniform _4, ChunkInfo _6, BuiltChunk chunk) {
         int x = chunk.getOrigin().getX();
         int z = chunk.getOrigin().getZ();
         getProgressManager().load(x, 0, z);
