@@ -4,6 +4,9 @@
 !.gitignore
 !build.gradle
 !gradle.properties
+!gradle/
+!gradle/wrapper/
+!gradle/wrapper/*
 !gradlew
 !gradlew.bat
 !LICENSE
