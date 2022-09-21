@@ -149,7 +149,7 @@ public final class SmoothChunks implements ClientModInitializer, ModMenuApi {
         return new ConfigScreenFactory<Screen>() {
             @Override
             public Screen create(Screen parent) {
-                return new SmoothChunksScreen(parent, animation, ease);
+                return new SmoothChunksScreen(parent, animation, ease, config);
             }
         };
     }

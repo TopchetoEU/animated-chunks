@@ -8,6 +8,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper.Argb;
+import me.topchetoeu.smoothchunks.ConfigManager;
 import me.topchetoeu.smoothchunks.Manager;
 import me.topchetoeu.smoothchunks.animation.Animation;
 import me.topchetoeu.smoothchunks.easing.Ease;
@@ -19,6 +20,7 @@ public class SmoothChunksScreen extends Screen {
     private final HorizontalSection mainSection = new HorizontalSection();
     private final Manager<Animation> animation;
     private final Manager<Ease> ease;
+    private final ConfigManager config;
 
     public static void playClick() {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
@@ -50,6 +52,7 @@ public class SmoothChunksScreen extends Screen {
 
     @Override
     public void close() {
+        config.save();
         MinecraftClient.getInstance().setScreen(parent);
     }
     @Override
@@ -102,10 +105,12 @@ public class SmoothChunksScreen extends Screen {
         res.children.addSelectableChild(selectionSection(ease, "Ease"));
         return res;
     }
-    public SmoothChunksScreen(Screen parent, Manager<Animation> animation, Manager<Ease> ease) {
+    public SmoothChunksScreen(Screen parent, Manager<Animation> animation, Manager<Ease> ease, ConfigManager config) {
         super(Text.of("Smooth Chunks Config"));
+        config.reload();
         this.animation = animation;
         this.ease = ease;
+        this.config = config;
         mainSection.x = mainSection.y = 5;
 
         this.parent = parent;
