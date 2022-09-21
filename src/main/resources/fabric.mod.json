@@ -1,24 +1,24 @@
 {
     "schemaVersion": 1,
-    "id": "smooth-chunks",
+    "id": "animated-chunks",
     "version": "0.2.0",
-    "name": "Smooth Chunks",
-    "description": "Smooth chunk load animations.",
+    "name": "Animated Chunks",
+    "description": "animated chunk load animations.",
     "authors": [ "TopchetoEU" ],
     "license": "MIT",
-    "icon": "assets/smooth-chunks/icon.png",
+    "icon": "assets/animated-chunks/icon.png",
     "environment": "client",
-    "accessWidener": "smooth-chunks.accesswidener",
+    "accessWidener": "animated-chunks.accesswidener",
     "entrypoints": {
         "client": [
-            "me.topchetoeu.smoothchunks.SmoothChunks"
+            "me.topchetoeu.animatedchunks.AnimatedChunks"
         ],
         "modmenu": [
-            "me.topchetoeu.smoothchunks.SmoothChunks"
+            "me.topchetoeu.animatedchunks.AnimatedChunks"
         ]
     },
     "mixins": [
-        "smooth-chunks.mixins.json"
+        "animated-chunks.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.9.3+build.207",
