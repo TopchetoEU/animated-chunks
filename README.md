@@ -20,8 +20,20 @@ Generally, this is what you'd call an "eye-candy" mod.
 ### Currently supported animations:
 
 - Rise
+
+  <img src="gifs/rise.gif" width="512">
+
 - Fall
+
+  <img src="gifs/fall.gif" width="512">
+
 - Scale
+
+  <img src="gifs/scale.gif" width="512">
+
+- Fly in
+
+  <img src="gifs/fly-in.gif" width="512">
 
 ### Currently supported interpolation types:
 

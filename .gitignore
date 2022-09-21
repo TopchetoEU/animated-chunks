@@ -1,4 +1,6 @@
 *
+!gifs
+!gifs/**
 !src
 !src/**
 !.gitignore
