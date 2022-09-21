@@ -21,9 +21,13 @@
         "animated-chunks.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.9.3+build.207",
+        "fabricloader": "*",
         "fabric": "*",
-        "minecraft": ">=1.18.2",
-        "modmenu": ">=3.2.1"
+        "minecraft": "=1.18.2",
+        "modmenu": "3.*"
+    },
+    "breaks": {
+        "sodium": "*",
+        "iris": "*"
     }
 }
