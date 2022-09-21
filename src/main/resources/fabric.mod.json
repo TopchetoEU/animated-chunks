@@ -25,5 +25,9 @@
         "fabric": "*",
         "minecraft": "=1.19.2",
         "modmenu": ">=4.0.0"
+    },
+    "breaks": {
+        "sodium": "*",
+        "iris": "*"
     }
 }
