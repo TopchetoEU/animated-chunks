@@ -21,19 +21,19 @@ Generally, this is what you'd call an "eye-candy" mod.
 
 - Rise
 
-  <img src="gifs/rise.gif" width="512">
+  <img src="gifs/rise.gif" width="300">
 
 - Fall
 
-  <img src="gifs/fall.gif" width="512">
+  <img src="gifs/fall.gif" width="300">
 
 - Scale
 
-  <img src="gifs/scale.gif" width="512">
+  <img src="gifs/scale.gif" width="300">
 
 - Fly in
 
-  <img src="gifs/fly-in.gif" width="512">
+  <img src="gifs/fly-in.gif" width="300">
 
 ### Currently supported interpolation types:
 
