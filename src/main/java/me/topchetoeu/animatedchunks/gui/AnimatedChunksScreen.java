@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper.Argb;
@@ -82,17 +81,17 @@ public class AnimatedChunksScreen extends Screen {
         buttonSection.order = OrderType.Justified;
         buttonSection.children.addChild(new Label(
             5, 7,
-            new LiteralText(manager.get().getDisplayName()).formatted(Formatting.BOLD)
+            Text.of(manager.get().getDisplayName()).copy().formatted(Formatting.BOLD)
         ));
         buttonSection.children.addSelectableChild(new Button(5, 5, Text.of("Select ..."), () -> client.setScreen(selectScreen)));
         res.children.addSelectableChild(buttonSection);
         res.children.addChild(new Label(
             5, 3,
-            new LiteralText("Author: " + manager.get().getAuthorOrDefault())
+            Text.of("Author: " + manager.get().getAuthorOrDefault())
         ).setMaxWidth(width / 2));
         res.children.addChild(new Label(
             5, 3,
-            new LiteralText(manager.get().getDescriptionOrDefault()).formatted(Formatting.ITALIC)
+            Text.of(manager.get().getDescriptionOrDefault()).copy().formatted(Formatting.ITALIC)
         ).setMaxWidth(width / 2));
 
         return res;

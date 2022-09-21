@@ -9,7 +9,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper.Argb;
@@ -45,11 +44,11 @@ public class SelectionScreen<T> extends Screen {
         float y = 0;
         matrices.push();
         matrices.translate(20, 5, 0);
-        textRenderer.draw(matrices, new LiteralText(element.getDisplayNameOrDefault()).formatted(Formatting.BOLD), 0, y, 0xFFFFFFFF);
+        textRenderer.draw(matrices, Text.of(element.getDisplayNameOrDefault()).copy().formatted(Formatting.BOLD), 0, y, 0xFFFFFFFF);
         y += textRenderer.fontHeight + 3;
-        textRenderer.draw(matrices, new LiteralText("Author: " + element.getAuthorOrDefault()), 0, y, 0xFFFFFFFF);
+        textRenderer.draw(matrices, Text.of("Author: " + element.getAuthorOrDefault()), 0, y, 0xFFFFFFFF);
         y += textRenderer.fontHeight + 2;
-        y += drawWarpedText(textRenderer, matrices, new LiteralText(element.getDescriptionOrDefault()).formatted(Formatting.ITALIC), 0, (int)y, width - 40);
+        y += drawWarpedText(textRenderer, matrices, Text.of(element.getDescriptionOrDefault()).copy().formatted(Formatting.ITALIC), 0, (int)y, width - 40);
         y += 5;
         matrices.pop();
 
