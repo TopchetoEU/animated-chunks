@@ -1,5 +1,7 @@
 package me.topchetoeu.smoothchunks;
 
+import java.io.File;
+
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
@@ -38,9 +40,16 @@ public final class SmoothChunks implements ClientModInitializer, ModMenuApi {
     public final Event<RegisterEvent<Animation>> ANIMATIONS_REGISTERING = Manager.createEvent();
 
     private ProgressManager progress;
+    private ConfigManager config;
     private Manager<Ease> ease;
     private Manager<Animation> animation;
 
+    /**
+     * Gets the config manager
+     */
+    public ConfigManager getConfigManager() {
+        return config;
+    }
     /**
      * Gets the chunk progress manager
      */
@@ -124,6 +133,8 @@ public final class SmoothChunks implements ClientModInitializer, ModMenuApi {
 
         registerEases(ease);
         registerAnimations(animation);
+
+        config = new ConfigManager(new File("config/smooth-chunks.dat"), animation, ease);
 
         EASES_REGISTERING.invoker().register(ease);
         ANIMATIONS_REGISTERING.invoker().register(animation);
