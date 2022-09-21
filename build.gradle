@@ -96,5 +96,5 @@ publishing {
 	}
 }
 loom {
-	accessWidenerPath = file("src/main/resources/smooth-chunks.accesswidener")
+	accessWidenerPath = file("src/main/resources/animated-chunks.accesswidener")
 }
