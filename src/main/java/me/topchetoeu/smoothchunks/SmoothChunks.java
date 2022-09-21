@@ -146,11 +146,9 @@ public final class SmoothChunks implements ClientModInitializer, ModMenuApi {
     }
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return new ConfigScreenFactory<Screen>() {
-            @Override
-            public Screen create(Screen parent) {
-                return new SmoothChunksScreen(parent, animation, ease, config);
-            }
+        return (Screen parent) -> {
+            var _this = getInstance();
+            return new SmoothChunksScreen(parent, _this.animation, _this.ease, _this.config);
         };
     }
 }
