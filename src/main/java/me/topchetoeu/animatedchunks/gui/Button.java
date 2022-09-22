@@ -83,7 +83,7 @@ public class Button extends DrawableHelper implements Drawable, Element, Selecta
         matrices.push();
         matrices.translate(this.x, this.y, getZOffset());
 
-        hovered = isMouseOver(x, y);
+        hovered = isMouseOver(x - this.x, y - this.y);
 
         if (hovered) {
             fill(matrices, 0, 0, (int)getWidth(), (int)getHeight(), Argb.getArgb(32, 255, 255, 255));
@@ -109,9 +109,6 @@ public class Button extends DrawableHelper implements Drawable, Element, Selecta
     public boolean isMouseOver(double x, double y) {
         if (clicked) return true;
 
-        x -= this.x;
-        y -= this.y;
-
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
     }
 
@@ -136,7 +133,7 @@ public class Button extends DrawableHelper implements Drawable, Element, Selecta
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button != 0) return false;
-        if (isMouseOver(mouseX, mouseY)) {
+        if (isMouseOver(mouseX - this.x, mouseY - this.x)) {
             clicked = true;
             hovered = true;
         }

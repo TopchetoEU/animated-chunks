@@ -246,9 +246,6 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
     public boolean isMouseOver(double x, double y) {
         if (clicked) return true;
 
-        x -= this.x;
-        y -= this.y;
-
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
     }
 
