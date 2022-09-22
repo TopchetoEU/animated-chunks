@@ -10,6 +10,7 @@ import net.minecraft.util.math.ColorHelper.Argb;
 import me.topchetoeu.animatedchunks.ConfigManager;
 import me.topchetoeu.animatedchunks.Manager;
 import me.topchetoeu.animatedchunks.animation.Animation;
+import me.topchetoeu.animatedchunks.animation.ProgressManager;
 import me.topchetoeu.animatedchunks.easing.Ease;
 import me.topchetoeu.animatedchunks.gui.Section.OrderType;
 import net.minecraft.client.MinecraftClient;
@@ -20,6 +21,7 @@ public class AnimatedChunksScreen extends Screen {
     private final Manager<Animation> animation;
     private final Manager<Ease> ease;
     private final ConfigManager config;
+    private final ProgressManager progress;
 
     public static void playClick() {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
@@ -46,8 +48,6 @@ public class AnimatedChunksScreen extends Screen {
         mainSection.order = OrderType.Justified;
         mainSection.children.addSelectableChild(selectionsSection());
         mainSection.children.addSelectableChild(previewSection());
-        mainSection.children.addSelectableChild(new Input(0, 0, null));
-        // setZOffset(parent.getZOffset() + 1); 
     }
 
     @Override
@@ -97,17 +97,36 @@ public class AnimatedChunksScreen extends Screen {
 
         return res;
     }
+    private Section durationSection() {
+        var res = new HorizontalSection();
+        res.setTargetWidth(width / 2);
+        var input = new NumberInput(res, 5, 5, (sender, val) -> {
+            if (val <= 0) sender.invalid = true;
+            else {
+                progress.setDuration(val);
+                sender.invalid = false;
+            }
+        });
+        input.width = (int)res.getTargetWidth();
+        res.x = res.y = 5;
+        res.title = Text.of("Duration:");
+        res.children.addSelectableChild(input);
+        return res;
+    }
     private Section selectionsSection() {
         var res = new HorizontalSection();
         res.x = res.y = 5;
         res.title = Text.of("Animation config:");
         res.children.addSelectableChild(selectionSection(animation, "Animation"));
         res.children.addSelectableChild(selectionSection(ease, "Ease"));
+        res.children.addSelectableChild(durationSection());
         return res;
     }
-    public AnimatedChunksScreen(Screen parent, Manager<Animation> animation, Manager<Ease> ease, ConfigManager config) {
+    
+    public AnimatedChunksScreen(Screen parent, Manager<Animation> animation, Manager<Ease> ease, ConfigManager config, ProgressManager progress) {
         super(Text.of("Animated Chunks Config"));
         config.reload();
+        this.progress = progress;
         this.animation = animation;
         this.ease = ease;
         this.config = config;

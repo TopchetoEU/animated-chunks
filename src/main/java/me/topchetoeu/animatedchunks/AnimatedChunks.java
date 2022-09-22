@@ -148,7 +148,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return (Screen parent) -> {
             var _this = getInstance();
-            return new AnimatedChunksScreen(parent, _this.animation, _this.ease, _this.config);
+            return new AnimatedChunksScreen(parent, _this.animation, _this.ease, _this.config, _this.progress);
         };
     }
 }

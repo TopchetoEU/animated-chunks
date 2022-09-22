@@ -2,42 +2,50 @@ package me.topchetoeu.animatedchunks.gui;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.GlStateManager.DstFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SrcFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.ColorHelper.Argb;
 
 public class Input extends DrawableHelper implements Drawable, Element, Selectable, BoundboxProvider {
-    public static interface ClickAction {
-        void onClick();
+    public interface InputAction {
+        void onInput(Input sender, String val);
     }
 
-    public ClickAction clickAction;
     public final MinecraftClient client;
     private boolean clicked = false;
-    private boolean focused = false;
     private boolean hovered = false;
-
-    public String content = "";
-    public int paddingX = 5, paddingY = 2;
-    public int x, y, width = 100;
-    public float scale = 1;
-    public float min = 0, max = 10;
-    private float value;
-
-    public float getValue() {
-        return value;
+    private boolean isFocused() {
+        return parent.getFocused() == this;
     }
-    public Input setValue(float val) {
-        if (val < min) val = min;
-        if (val > max) val = max;
+    private int index = 0;
 
-        value = val;
+    private final ParentElement parent;
+    private String content = "";
+    public int paddingX = 5, paddingY = 2;
+    private float time = 0;
+    public int x, y, width = 100;
+    public boolean invalid = false;
+    public InputAction action = null;
+
+    public String getContent() {
+        return content;
+    }
+    public Input setContent(String val) {
+        if (index > val.length()) index = val.length();
+        content = val;
+        action.onInput(this, val);
         return this;
     }
 
@@ -52,11 +60,7 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
         return width;
     }
     public float getHeight() {
-        return paddingY * 2 + client.textRenderer.fontHeight;
-    }
-
-    public void click() {
-        if (clickAction != null) clickAction.onClick();
+        return 1 + paddingY * 2 + client.textRenderer.fontHeight;
     }
 
     @Override
@@ -66,14 +70,42 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
 
     @Override
     public SelectionType getType() {
-        if (focused) return SelectionType.FOCUSED;
+        if (isFocused()) return SelectionType.FOCUSED;
         if (hovered) return SelectionType.HOVERED;
         return SelectionType.NONE;
     }
     @Override
     public boolean changeFocus(boolean lookForwards) {
-        focused = !focused;
-        return focused;
+        if (isFocused()) {
+            parent.setFocused(null);
+            return false;
+        }
+        else {
+            parent.setFocused(this);
+            return true;
+        }
+    }
+
+    private void renderCursor(MatrixStack matrices, float delta) {
+        time += delta / 20;
+
+        if ((int)(time * 2) % 2 != 0) return;
+
+        // RenderSystem.enableBlend();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.disableCull();
+        RenderSystem.disableTexture();
+        RenderSystem.blendFuncSeparate(SrcFactor.ONE_MINUS_DST_COLOR, DstFactor.ONE_MINUS_SRC_COLOR, SrcFactor.ONE, DstFactor.ZERO);
+
+        float x1 = paddingX + client.textRenderer.getWidth(content.substring(0, index)) + 1;
+        float x2 = x1 + 1;
+        // if (index < content.length()) {
+        //     x2 += client.textRenderer.getWidth("" + content.charAt(index)) - 2;
+        // }
+        float y1 = paddingY;
+        float y2 = y1 + client.textRenderer.fontHeight;
+    
+        ChunkPreview.myFill(matrices, x1, y1, x2, y2, 1, 1, 1, 1);
     }
 
     @Override
@@ -91,6 +123,11 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
             fill(matrices, 0, 0, (int)getWidth(), (int)getHeight(), Argb.getArgb(127, 255, 255, 255));
         }
 
+        client.textRenderer.draw(matrices, content, paddingX + 1, paddingY + 1, white);
+        if (isFocused()) renderCursor(matrices, delta);
+
+        if (invalid) white = 0xFFFF0000;
+
         drawHorizontalLine(matrices, 0, (int)getWidth() - 1, 0, white);
         drawVerticalLine(matrices, 0, 0, (int)getHeight() - 1, white);
         drawVerticalLine(matrices, (int)getWidth() - 1, 0, (int)getHeight() - 1, white);
@@ -98,8 +135,6 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
 
         // if (focused) {
         // }
-
-        client.textRenderer.draw(matrices, content, paddingX + 1, paddingY + 1, white);
 
         matrices.pop();
     }
@@ -113,21 +148,32 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
-        content += chr;
+        content = content.substring(0, index) + chr + content.substring(index);
+        action.onInput(this, content);
+        index++;
+        time = 0;
         return true;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_BACKSPACE && content.length() > 0) content = content.substring(0, content.length() - 1);
-        return false;
-    }
-    @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ENTER) {
-            clicked = false;
-            return true;
+        if (keyCode == GLFW.GLFW_KEY_BACKSPACE && index > 0) {
+            content = content.substring(0, index - 1) + content.substring(index);
+            action.onInput(this, content);
+            index--;
         }
+        if (keyCode == GLFW.GLFW_KEY_DELETE && index < content.length()) {
+            time = 0;
+            content = content.substring(0, index) + content.substring(index + 1);
+            action.onInput(this, content);
+        }
+        if (keyCode == GLFW.GLFW_KEY_RIGHT && index < content.length()) {
+            index++;
+        }
+        if (keyCode == GLFW.GLFW_KEY_LEFT && index > 0) {
+            index--;
+        }
+        time = 0;
         return false;
     }
     @Override
@@ -151,8 +197,9 @@ public class Input extends DrawableHelper implements Drawable, Element, Selectab
         return false;
     }
 
-    public Input(int x, int y, ClickAction clickAction) {
-        this.clickAction = clickAction;
+    public Input(ParentElement parent, int x, int y, InputAction input) {
+        this.parent = parent;
+        this.action = input;
         this.client = MinecraftClient.getInstance();
         this.x = x;
         this.y = y;
