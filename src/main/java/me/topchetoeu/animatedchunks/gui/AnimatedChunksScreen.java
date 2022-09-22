@@ -46,6 +46,7 @@ public class AnimatedChunksScreen extends Screen {
         mainSection.order = OrderType.Justified;
         mainSection.children.addSelectableChild(selectionsSection());
         mainSection.children.addSelectableChild(previewSection());
+        mainSection.children.addSelectableChild(new Input(0, 0, null));
         // setZOffset(parent.getZOffset() + 1); 
     }
 
