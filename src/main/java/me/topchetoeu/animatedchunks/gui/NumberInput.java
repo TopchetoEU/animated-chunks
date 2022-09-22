@@ -18,7 +18,7 @@ public class NumberInput extends Input {
         return this;
     }
 
-    public NumberInput(ParentElement parent, int x, int y, InputAction action) {
+    public NumberInput(ParentElement parent, int x, int y, float value, InputAction action) {
         super(parent, x, y, null);
         super.action = (sender, val) -> {
             try {
@@ -30,6 +30,9 @@ public class NumberInput extends Input {
             }
         };
         this.action = action;
-        setContent("");
+        setContent(Float.toString(value));
+    }
+    public NumberInput(ParentElement parent, int x, int y, InputAction action) {
+        this(parent, x, y, 0, action);
     }
 }

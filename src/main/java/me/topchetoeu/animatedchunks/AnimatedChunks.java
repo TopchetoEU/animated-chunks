@@ -134,7 +134,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
         registerEases(ease);
         registerAnimations(animation);
 
-        config = new ConfigManager(new File("config/animated-chunks.dat"), animation, ease);
+        config = new ConfigManager(new File("config/animated-chunks.dat"), animation, ease, progress);
 
         EASES_REGISTERING.invoker().register(ease);
         ANIMATIONS_REGISTERING.invoker().register(animation);

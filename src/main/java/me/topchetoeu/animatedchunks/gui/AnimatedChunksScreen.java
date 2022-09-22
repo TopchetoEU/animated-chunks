@@ -100,7 +100,7 @@ public class AnimatedChunksScreen extends Screen {
     private Section durationSection() {
         var res = new HorizontalSection();
         res.setTargetWidth(width / 2);
-        var input = new NumberInput(res, 5, 5, (sender, val) -> {
+        var input = new NumberInput(res, 5, 5, progress.getDuration(), (sender, val) -> {
             if (val <= 0) sender.invalid = true;
             else {
                 progress.setDuration(val);
