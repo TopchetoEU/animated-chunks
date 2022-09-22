@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/main/resources/assets/smooth-chunks/icon.png" width="100">
+<img src="src/main/resources/assets/animated-chunks/icon.png" width="100">
 
 # Smooth Chunks
 
