@@ -91,7 +91,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
             .description("Animation takes off very quickly, overshoots, then undershoots, until it reaches the end.")
         );
 
-        manager.set("elastic");
+        manager.set("sine");
     }
     private static void registerAnimations(Manager<Animation> manager) {
         manager.register(new Descriptor<>(new RiseAnimation(), "rise")
@@ -134,7 +134,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
         registerEases(ease);
         registerAnimations(animation);
 
-        config = new ConfigManager(new File("config/animated-chunks.dat"), animation, ease);
+        config = new ConfigManager(new File("config/animated-chunks.dat"), animation, ease, progress);
 
         EASES_REGISTERING.invoker().register(ease);
         ANIMATIONS_REGISTERING.invoker().register(animation);
@@ -148,7 +148,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return (Screen parent) -> {
             var _this = getInstance();
-            return new AnimatedChunksScreen(parent, _this.animation, _this.ease, _this.config);
+            return new AnimatedChunksScreen(parent, _this.animation, _this.ease, _this.config, _this.progress);
         };
     }
 }

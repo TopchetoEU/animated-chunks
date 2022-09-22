@@ -181,7 +181,7 @@ public abstract class Section extends AbstractParentElement implements Drawable,
     @Override
     public Optional<Element> hoveredElement(double mouseX, double mouseY) {
         for (Selectable element : this.children.selectables) {
-            var offset = children.getOffsetAndPos(element);
+            var offset = children.getOffset(element);
             if (element.getType() != SelectionType.HOVERED || !((Element)element).isMouseOver(mouseX - offset.x, mouseY - offset.y)) continue;
             return Optional.of((Element)element);
         }
@@ -191,8 +191,8 @@ public abstract class Section extends AbstractParentElement implements Drawable,
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
         for (Element element : this.children()) {
-            var offset = children.getOffsetAndPos(element);
-            if (!element.mouseScrolled(mouseX - offset.x, mouseY - offset.y, delta)) continue;
+            var offset = children.getOffset(element);
+            if (!element.mouseScrolled(mouseX - offset.x - x, mouseY - offset.y - y, delta)) continue;
             return true;
         }
         return false;
@@ -200,8 +200,8 @@ public abstract class Section extends AbstractParentElement implements Drawable,
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (Element element : this.children()) {
-            var offset = children.getOffsetAndPos(element);
-            if (!element.mouseClicked(mouseX - offset.x, mouseY - offset.y, button)) continue;
+            var offset = children.getOffset(element);
+            if (!element.mouseClicked(mouseX - offset.x - x, mouseY - offset.y - y, button)) continue;
             this.setFocused(element);
             if (button == 0) {
                 this.setDragging(true);
@@ -214,8 +214,8 @@ public abstract class Section extends AbstractParentElement implements Drawable,
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         for (Element element : this.children()) {
-            var offset = children.getOffsetAndPos(element);
-            element.mouseMoved(mouseX - offset.x, mouseY - offset.y);
+            var offset = children.getOffset(element);
+            element.mouseMoved(mouseX - offset.x - x, mouseY - offset.y - y);
         }
     }
 
@@ -224,8 +224,8 @@ public abstract class Section extends AbstractParentElement implements Drawable,
         this.setDragging(false);
 
         for (Element element : children.get()) {
-            var offset = children.getOffsetAndPos(element);
-            if (element.mouseReleased(mouseX - (int)offset.x, mouseY - (int)offset.y, button)) return true;
+            var offset = children.getOffset(element);
+            if (element.mouseReleased(mouseX - (int)offset.x - x, mouseY - (int)offset.y - y, button)) return true;
         }
 
         return false;
@@ -234,8 +234,8 @@ public abstract class Section extends AbstractParentElement implements Drawable,
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (this.getFocused() != null && this.isDragging() && button == 0) {
-            var offset = children.getOffsetAndPos(getFocused());
-            return this.getFocused().mouseDragged(mouseX - offset.x, mouseY - offset.y, button, deltaX, deltaY);
+            var offset = children.getOffset(getFocused());
+            return this.getFocused().mouseDragged(mouseX - offset.x - x, mouseY - offset.y - y, button, deltaX, deltaY);
         }
         return false;
     }

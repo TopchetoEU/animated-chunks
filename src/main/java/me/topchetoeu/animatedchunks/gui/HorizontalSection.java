@@ -16,7 +16,7 @@ public final class HorizontalSection extends Section {
 
     private float targetWidth;
 
-    public float getTargetWidth(float width) {
+    public float getTargetWidth() {
         return this.targetWidth;
     }
     public void setTargetWidth(float width) {

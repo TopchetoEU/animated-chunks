@@ -89,7 +89,7 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         return z < 3;
     }
 
-    private static void myFill(MatrixStack matrices, float x1, float y1, float x2, float y2, float a, float r, float g, float b) {
+    public static void myFill(MatrixStack matrices, float x1, float y1, float x2, float y2, float a, float r, float g, float b) {
         if (x1 < x2) {
             float tmp = x1;
             x1 = x2;
@@ -121,7 +121,6 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
             RenderSystem.enableBlend();
             RenderSystem.disableCull();
             RenderSystem.disableTexture();
-            RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
             bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             bufferBuilder.vertex(p1.getX(), p1.getY(), p1.getZ()).color(r, g, b, a).next();
@@ -245,9 +244,6 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
     @Override
     public boolean isMouseOver(double x, double y) {
         if (clicked) return true;
-
-        x -= this.x;
-        y -= this.y;
 
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
     }
