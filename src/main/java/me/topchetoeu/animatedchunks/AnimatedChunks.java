@@ -91,7 +91,7 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
             .description("Animation takes off very quickly, overshoots, then undershoots, until it reaches the end.")
         );
 
-        manager.set("elastic");
+        manager.set("sine");
     }
     private static void registerAnimations(Manager<Animation> manager) {
         manager.register(new Descriptor<>(new RiseAnimation(), "rise")
