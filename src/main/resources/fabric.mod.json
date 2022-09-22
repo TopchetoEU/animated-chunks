@@ -3,7 +3,7 @@
     "id": "animated-chunks",
     "version": "0.3.0",
     "name": "Animated Chunks",
-    "description": "animated chunk load animations.",
+    "description": "Animated chunk load animations.",
     "authors": [ "TopchetoEU" ],
     "license": "MIT",
     "icon": "assets/animated-chunks/icon.png",
