@@ -63,8 +63,6 @@ abstract class WorldRendererMixin {
         int y = chunk.getOrigin().getY();
         int z = chunk.getOrigin().getZ();
 
-        // shader.fogStart.set(Float.POSITIVE_INFINITY);
-
         if (getProgressManager().isChunkLoaded(x, 0, z)) {
             float progress = getProgressManager().getChunkProgress(x, 0, z);
 
