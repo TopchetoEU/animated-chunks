@@ -160,7 +160,7 @@ public final class Animator {
             float _progress = EASES.getValue().ease(progress);
             ANIMATIONS.getValue().animate(
                 _progress, matrices,
-                chunkPos.getX() * 16, 0, chunkPos.getZ() * 16,
+                chunkPos.getX() * 16, chunkPos.getY() * 16, chunkPos.getZ() * 16,
                 (float)playerPos.x, (float)playerPos.y, (float)playerPos.z
             );
                 // matrices.translate(0, 0, 16);

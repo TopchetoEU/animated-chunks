@@ -162,13 +162,16 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
     }
     private void renderChunk(MatrixStack matrices, int x, int y, int n, float delta) {
         duration = animator.getDuration();
+
+        float progress = globalProgress / duration - (float)Math.sqrt(x * x + y * y) / (float)n / 2;
+        if (progress > 1) progress = 1;
+        if (progress <= 0) return;
+
         matrices.push();
         matrices.translate(x * 16 - 8, 0, y * 16 - 8);
         
         // x += n;
         // y += n;
-
-        float progress = globalProgress / duration - (float)Math.sqrt(x * x + y * y) / (float)n / 2;
 
         animator.animate(matrices, progress, new BlockPos(x * 16, 0, y * 16));
 
