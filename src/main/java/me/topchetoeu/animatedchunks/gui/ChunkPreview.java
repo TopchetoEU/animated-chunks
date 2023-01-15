@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import me.topchetoeu.animatedchunks.AnimatedChunks;
+import me.topchetoeu.animatedchunks.animation.Animator;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
@@ -20,6 +20,7 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
@@ -31,8 +32,10 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         void onClick();
     }
 
-    public ClickAction clickAction;
     public final MinecraftClient client;
+    public final Animator animator;
+
+    public ClickAction clickAction;
     private boolean clicked = false;
     private boolean rotating = false;
     private boolean focused = false;
@@ -158,6 +161,7 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         RenderSystem.enableBlend();
     }
     private void renderChunk(MatrixStack matrices, int x, int y, int n, float delta) {
+        duration = animator.getDuration();
         matrices.push();
         matrices.translate(x * 16 - 8, 0, y * 16 - 8);
         
@@ -165,16 +169,19 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         // y += n;
 
         float progress = globalProgress / duration - (float)Math.sqrt(x * x + y * y) / (float)n / 2;
-        if (progress < 0) progress = 0;
-        if (progress > 1) progress = 1;
-        if (progress < 0.999) {
-            float _progress = AnimatedChunks.getInstance().getEaseManager().getValue().ease(progress);
-            AnimatedChunks.getInstance().getAnimationManager().getValue().animate(
-                _progress, matrices,
-                x * 16, 0, y * 16, 0, 0, 0
-            );
-                // matrices.translate(0, 0, 16);
-        }
+
+        animator.animate(matrices, progress, new BlockPos(x * 16, 0, y * 16));
+
+        // if (progress < 0) progress = 0;
+        // if (progress > 1) progress = 1;
+        // if (progress < 0.999) {
+        //     float _progress = animator.EASES.getValue().ease(progress);
+        //     AnimatedChunks.getInstance().getAnimationManager().getValue().animate(
+        //         _progress, matrices,
+        //         x * 16, 0, y * 16, 0, 0, 0
+        //     );
+        //         // matrices.translate(0, 0, 16);
+        // }
         matrices.translate(0, 0, 16);
         matrices.multiply(rotation);
         myFill(matrices, 2, 1, 14, 2, progress, 1, 1, 1);
@@ -185,7 +192,6 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         matrices.pop();
     }
     private void renderChunks(MatrixStack matrices, float delta, int n) {
-        duration = AnimatedChunks.getInstance().getProgressManager().getDuration();
         // globalProgress += (lastTime - (lastTime = System.nanoTime())) / -1000000000f;
         globalProgress += delta * 0.05f;
         matrices.push();
@@ -316,16 +322,18 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         return false;
     }
 
-    public ChunkPreview(int x, int y) {
+    public ChunkPreview(int x, int y, Animator animator) {
         this.client = MinecraftClient.getInstance();
         this.x = x;
         this.y = y;
+        this.animator = animator;
     }
-    public ChunkPreview(int x, int y, int w, int h) {
+    public ChunkPreview(int x, int y, int w, int h, Animator animator) {
         this.client = MinecraftClient.getInstance();
         this.x = x;
         this.y = y;
         this.width = w;
         this.height = h;
+        this.animator = animator;
     }
 }

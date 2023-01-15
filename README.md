@@ -14,6 +14,8 @@ An enhanecd fork of [cadenkriese's mod](https://github.com/cadenkriese/smooth-ch
 
 </div>
 
+**NOTE: This mod WILL NOT support Sodium, since Sodium doesn't render separate chunks, but whole regions, hence separate chunk animations are rendered impossible. Anyone interested in making sodium compatibility, be my guest**
+
 ## What is this?
 
 Animated Chunks is a Fabric mod that adds animations of currently loading chunks. This makes chunk loading generally seem much more pleasant than them appearing out of thin air. There are multiple built-in animations and ease types, and if this isnt't enough, there's an API which will allow you to add your own animations and eases<br/>(with ease :trollface:)
@@ -47,7 +49,7 @@ Generally, this is what you'd call an "eye-candy" mod.
 
 ## Future plans
 
-In the future, I plan to extend the scope of this mod to not only smoothen the chunk loading, but entity spawning/despawning/dying, liquid flowing, crops growing etc. and support Sodium.
+In the future, I plan to extend the scope of this mod to not only smoothen the chunk loading, but entity spawning/despawning/dying, liquid flowing, crops growing etc.
 
 ## License
 

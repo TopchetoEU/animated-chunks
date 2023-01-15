@@ -9,19 +9,15 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper.Argb;
 import me.topchetoeu.animatedchunks.ConfigManager;
 import me.topchetoeu.animatedchunks.Manager;
-import me.topchetoeu.animatedchunks.animation.Animation;
-import me.topchetoeu.animatedchunks.animation.ProgressManager;
-import me.topchetoeu.animatedchunks.easing.Ease;
+import me.topchetoeu.animatedchunks.animation.Animator;
 import me.topchetoeu.animatedchunks.gui.Section.OrderType;
 import net.minecraft.client.MinecraftClient;
 
 public class AnimatedChunksScreen extends Screen {
     public final Screen parent;
     private final HorizontalSection mainSection = new HorizontalSection();
-    private final Manager<Animation> animation;
-    private final Manager<Ease> ease;
     private final ConfigManager config;
-    private final ProgressManager progress;
+    private final Animator animator;
 
     public static void playClick() {
         MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
@@ -65,7 +61,7 @@ public class AnimatedChunksScreen extends Screen {
         res.x = res.y = 5;
         res.title = Text.of("Preview:");
 
-        res.children.addSelectableChild(new ChunkPreview(0, 0, 150, 150));
+        res.children.addSelectableChild(new ChunkPreview(0, 0, 150, 150, animator));
 
         return res;
     }
@@ -100,10 +96,10 @@ public class AnimatedChunksScreen extends Screen {
     private Section durationSection() {
         var res = new HorizontalSection();
         res.setTargetWidth(width / 2);
-        var input = new NumberInput(res, 5, 5, progress.getDuration(), (sender, val) -> {
+        var input = new NumberInput(res, 5, 5, animator.getDuration(), (sender, val) -> {
             if (val <= 0) sender.invalid = true;
             else {
-                progress.setDuration(val);
+                animator.setDuration(val);
                 sender.invalid = false;
             }
         });
@@ -117,18 +113,16 @@ public class AnimatedChunksScreen extends Screen {
         var res = new HorizontalSection();
         res.x = res.y = 5;
         res.title = Text.of("Animation config:");
-        res.children.addSelectableChild(selectionSection(animation, "Animation"));
-        res.children.addSelectableChild(selectionSection(ease, "Ease"));
+        res.children.addSelectableChild(selectionSection(animator.ANIMATIONS, "Animation"));
+        res.children.addSelectableChild(selectionSection(animator.EASES, "Ease"));
         res.children.addSelectableChild(durationSection());
         return res;
     }
     
-    public AnimatedChunksScreen(Screen parent, Manager<Animation> animation, Manager<Ease> ease, ConfigManager config, ProgressManager progress) {
+    public AnimatedChunksScreen(Screen parent, ConfigManager config, Animator animator) {
         super(Text.of("Animated Chunks Config"));
         config.reload();
-        this.progress = progress;
-        this.animation = animation;
-        this.ease = ease;
+        this.animator = animator;
         this.config = config;
         mainSection.x = mainSection.y = 5;
 

@@ -5,11 +5,10 @@ import java.io.File;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
-import me.topchetoeu.animatedchunks.Manager.RegisterEvent;
 import me.topchetoeu.animatedchunks.animation.Animation;
 import me.topchetoeu.animatedchunks.animation.FallAnimation;
 import me.topchetoeu.animatedchunks.animation.FlyInAnimation;
-import me.topchetoeu.animatedchunks.animation.ProgressManager;
+import me.topchetoeu.animatedchunks.animation.Animator;
 import me.topchetoeu.animatedchunks.animation.RiseAnimation;
 import me.topchetoeu.animatedchunks.animation.ScaleAnimation;
 import me.topchetoeu.animatedchunks.easing.Ease;
@@ -20,54 +19,27 @@ import me.topchetoeu.animatedchunks.easing.SineEase;
 import me.topchetoeu.animatedchunks.gui.AnimatedChunksScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
-import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.BlockPos;
 
 public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
     private static AnimatedChunks instance;
+    /**
+     * Gets the currently running instance of this mod
+     */
     public static AnimatedChunks getInstance() {
         return instance;
     }
 
     /**
-     * An event, fired once, when eases are being registered
+     * The animator used by the mod. Used to manage animation progress and animate chunks
      */
-    public final Event<RegisterEvent<Ease>> EASES_REGISTERING = Manager.createEvent();
+    public final Animator animator;
     /**
-     * An event, fired once, when animations are being registered
+     * The config manager used by the mod. Used to save/load config from disk
      */
-    public final Event<RegisterEvent<Animation>> ANIMATIONS_REGISTERING = Manager.createEvent();
+    public final ConfigManager config;
 
-    private ProgressManager progress;
-    private ConfigManager config;
-    private Manager<Ease> ease;
-    private Manager<Animation> animation;
-
-    /**
-     * Gets the config manager
-     */
-    public ConfigManager getConfigManager() {
-        return config;
-    }
-    /**
-     * Gets the chunk progress manager
-     */
-    public ProgressManager getProgressManager() {
-        return progress;
-    }
-    /**
-     * Gets the animation manager
-     */
-    public Manager<Animation> getAnimationManager() {
-        return animation;
-    }
-    /**
-     * Gets the ease manager
-     */
-    public Manager<Ease> getEaseManager() {
-        return ease;
-    }
 
     private static void registerEases(Manager<Ease> manager) {
         manager.register(new Descriptor<>(new LinearEase(), "linear")
@@ -121,34 +93,35 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
     @Override public void onInitializeClient() {
         instance = this;
 
-        progress = new ProgressManager();
-        ease = new Manager<>(x -> 1);
-        ease.get()
-            .description("Ends the animation as soon as it has started.")
-            .displayName("No animation");
-        animation = new Manager<>((a, b, c, d, e, f, g, h) -> {});
-        animation.get()
-            .description("Does nothing.")
-            .displayName("No animation");
-
-        registerEases(ease);
-        registerAnimations(animation);
-
-        config = new ConfigManager(new File("config/animated-chunks.dat"), animation, ease, progress);
-
-        EASES_REGISTERING.invoker().register(ease);
-        ANIMATIONS_REGISTERING.invoker().register(animation);
-
         ClientChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
             BlockPos pos = chunk.getPos().getStartPos();
-            progress.unload(pos.getX(), pos.getY(), pos.getZ());
+            animator.unload(pos.getX(), pos.getY(), pos.getZ());
         });
     }
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return (Screen parent) -> {
             var _this = getInstance();
-            return new AnimatedChunksScreen(parent, _this.animation, _this.ease, _this.config, _this.progress);
+            return new AnimatedChunksScreen(parent, _this.config, _this.animator);
         };
+    }
+
+    public AnimatedChunks() {
+        var eases = new Manager<>(new Descriptor<Ease>(x -> 1, "default")
+            .author("TopchetoEU")
+            .description("Ends the animation as soon as it has started.")
+            .displayName("No animation")
+        );
+        var animations = new Manager<>(new Descriptor<Animation>((a, b, c, d, e, f, g, h) -> {}, "default")
+            .author("TopchetoEU")
+            .description("Does nothing.")
+            .displayName("No animation")
+        );
+
+        registerEases(eases);
+        registerAnimations(animations);
+
+        animator = new Animator(animations, eases);
+        config = new ConfigManager(new File("config/animated-chunks.dat"), animator);
     }
 }
