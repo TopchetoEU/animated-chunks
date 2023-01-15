@@ -7,21 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-
 public final class Manager<T> {
-    public static interface RegisterEvent<T> {
-        public void register(Manager<T> manager);
-    }
-    public static final <T> Event<RegisterEvent<T>> createEvent() {
-        return EventFactory.createArrayBacked(RegisterEvent.class, (listeners) -> (manager) -> {
-            for (RegisterEvent<T> listener: listeners) {
-                listener.register(manager);
-            }
-        });
-    }
-
     private String currName = null;
     private Map<String, Descriptor<T>> objects = new Hashtable<>();
 
@@ -75,8 +61,8 @@ public final class Manager<T> {
         return Collections.unmodifiableCollection(objects.values());
     }
 
-    public Manager(T _default) {
-        register(new Descriptor<>(_default, "default").displayName("Default").author("TopchetoEU"));
+    public Manager(Descriptor<T> _default) {
+        register(_default);
         set("default");
     }
 }

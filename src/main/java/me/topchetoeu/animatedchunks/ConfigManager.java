@@ -9,15 +9,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
-import me.topchetoeu.animatedchunks.animation.Animation;
-import me.topchetoeu.animatedchunks.animation.ProgressManager;
-import me.topchetoeu.animatedchunks.easing.Ease;
+import me.topchetoeu.animatedchunks.animation.Animator;
 
 public class ConfigManager {
     public final File configFile;
-    private final Manager<Animation> animation;
-    private final Manager<Ease> ease;
-    private final ProgressManager progress;
+    private final Animator animator;
 
     private String readString(InputStream reader) throws IOException {
         String res = "";
@@ -56,9 +52,9 @@ public class ConfigManager {
 
             reader.close();
 
-            this.animation.set(animation);
-            this.ease.set(ease);
-            this.progress.setDuration(duration);
+            this.animator.ANIMATIONS.set(animation);
+            this.animator.EASES.set(ease);
+            this.animator.setDuration(duration);
         }
         catch (IOException e) {
             save();
@@ -67,9 +63,9 @@ public class ConfigManager {
     public void save() {
         try {
             var writer = new FileOutputStream(configFile);
-            writeString(writer, animation.get().getName());
-            writeString(writer, ease.get().getName());
-            writer.write(ByteBuffer.allocate(4).putFloat(progress.getDuration()).array());
+            writeString(writer, this.animator.ANIMATIONS.get().getName());
+            writeString(writer, this.animator.EASES.get().getName());
+            writer.write(ByteBuffer.allocate(4).putFloat(animator.getDuration()).array());
             writer.close();
         }
         catch (IOException e) {
@@ -77,11 +73,9 @@ public class ConfigManager {
         }
     }
 
-    public ConfigManager(File configFile, Manager<Animation> animation, Manager<Ease> ease, ProgressManager progress) {
+    public ConfigManager(File configFile, Animator animator) {
         this.configFile = configFile;
-        this.animation = animation;
-        this.ease = ease;
-        this.progress = progress;
+        this.animator = animator;
 
         reload();
     }
