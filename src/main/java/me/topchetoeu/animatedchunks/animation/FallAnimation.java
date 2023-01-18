@@ -1,6 +1,6 @@
 package me.topchetoeu.animatedchunks.animation;
 
-import net.minecraft.client.util.math.MatrixStack;
+import java.util.Map;
 
 public class FallAnimation implements Animation {
     private float offset;
@@ -12,12 +12,11 @@ public class FallAnimation implements Animation {
         this.offset = offset;
     }
 
-    @Override
-    public void animate(float progress, MatrixStack matrices, int chunkX, int chunkY, int chunkZ, float playerX, float playerY, float playerZ) {
-        animate(progress, matrices);
+    public Map<String, Float> uniforms() {
+        return Map.of("animation_f", offset);
     }
-    public void animate(float progress, MatrixStack matrices) {
-        matrices.translate(0, offset * (1 - progress), 0);
+    public String statement() {
+        return "pos += vec3(0, animation_f * (1 - t));";
     }
 
     public FallAnimation(float offset) {

@@ -1,10 +1,11 @@
 package me.topchetoeu.animatedchunks.animation;
 
-import net.minecraft.client.util.math.MatrixStack;
+import java.util.Map;
 
 public class ScaleAnimation implements Animation {
+    public static float xOffset = 8, yOffset = 8, zOffset = 8;
+
     private boolean scaleY = true;
-    private float xOffset = 8, yOffset = 8, zOffset = 8;
 
     public boolean isScalingY() {
         return scaleY;
@@ -13,38 +14,31 @@ public class ScaleAnimation implements Animation {
         this.scaleY = scaleY;
     }
 
-    public float getXOffset() {
-        return xOffset;
-    }
-    public void setXOffset(float xOffset) {
-        this.xOffset = xOffset;
-    }
-
-    public float getYOffset() {
-        return yOffset;
-    }
-    public void setYOffset(float yOffset) {
-        this.yOffset = yOffset;
-    }
-    
-    public float getZOffset() {
-        return zOffset;
-    }
-    public void setZOffset(float zOffset) {
-        this.zOffset = zOffset;
+    @Override
+    public Map<String, Float> uniforms() {
+        return Map.of("animation_ox", xOffset, "animation_oy", yOffset, "animation_oz", zOffset, "animation_sy", scaleY ? 1f : 0f);
     }
 
     @Override
-    public void animate(float progress, MatrixStack matrices, int chunkX, int chunkY, int chunkZ, float playerX, float playerY, float playerZ) {
-        float scaleX = progress;
-        float scaleZ = progress;
-
-        matrices.translate(xOffset, yOffset, zOffset);
-        matrices.scale(scaleX, 1, scaleZ);
-        matrices.translate(-xOffset, -yOffset, -zOffset);
+    public String statement() {
+        return
+            "tmp8 = vec3(animation_ox, animation_oy, animation_oz);" +
+            "tmp9 = vec3(t);" +
+            "if (animation_sy < .5f) tmp9.y = 0;" +
+            "pos += tmp8;" +
+            "pos *= tmp9;" +
+            "pos -= tmp8;";
     }
 
-    public ScaleAnimation() {
+    // @Override
+    // public void animate(float progress, MatrixStack matrices, int chunkX, int chunkY, int chunkZ, float playerX, float playerY, float playerZ) {
+    //     float scaleX = progress;
+    //     float scaleZ = progress;
 
-    }
+    //     matrices.translate(xOffset, yOffset, zOffset);
+    //     matrices.scale(scaleX, 1, scaleZ);
+    //     matrices.translate(-xOffset, -yOffset, -zOffset);
+    // }
+
+    public ScaleAnimation() { }
 }

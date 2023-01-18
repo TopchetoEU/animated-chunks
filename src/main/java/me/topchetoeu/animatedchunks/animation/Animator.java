@@ -6,9 +6,6 @@ import java.util.Hashtable;
 
 import me.topchetoeu.animatedchunks.Manager;
 import me.topchetoeu.animatedchunks.easing.Ease;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3d;
-import net.minecraft.util.math.BlockPos;
 
 public final class Animator {
     public static class ChunkLoc {
@@ -151,34 +148,5 @@ public final class Animator {
         if (!isChunkLoaded(x, y, z)) return 0f;
         if (!chunkToStage.containsKey(new ChunkLoc(x, y, z))) return 1f;
         return chunkToStage.get(new ChunkLoc(x, y, z));
-    }
-
-    public void animate(MatrixStack matrices, float progress, BlockPos chunkPos, Vector3d playerPos) {
-        if (progress < 0) progress = 0;
-        if (progress > 1) progress = 1;
-        if (progress < 0.999) {
-            float _progress = EASES.getValue().ease(progress);
-            ANIMATIONS.getValue().animate(
-                _progress, matrices,
-                chunkPos.getX() * 16, chunkPos.getY() * 16, chunkPos.getZ() * 16,
-                (float)playerPos.x, (float)playerPos.y, (float)playerPos.z
-            );
-                // matrices.translate(0, 0, 16);
-        }
-    }
-    public void animate(MatrixStack matrices, BlockPos chunkPos, Vector3d playerPos) {
-        if (!isChunkLoaded(chunkPos.getX(), chunkPos.getY(), chunkPos.getZ())) {
-            matrices.scale(0, 0, 0);
-        }
-        else {
-            animate(matrices, getChunkProgress(chunkPos.getX(), chunkPos.getY(), chunkPos.getZ()), chunkPos, playerPos);
-        }
-    }
-
-    public void animate(MatrixStack matrices, BlockPos chunkPos) {
-        animate(matrices, chunkPos, new Vector3d(0, 0, 0));
-    }
-    public void animate(MatrixStack matrices, float progress, BlockPos chunkPos) {
-        animate(matrices, progress, chunkPos, new Vector3d(0, 0, 0));
     }
 }
