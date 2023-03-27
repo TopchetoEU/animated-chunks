@@ -20,7 +20,6 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
@@ -173,7 +172,7 @@ public class ChunkPreview extends DrawableHelper implements Drawable, Element, S
         // x += n;
         // y += n;
 
-        animator.animate(matrices, progress, new BlockPos(x * 16, 0, y * 16));
+        // animator.animate(matrices, progress, new BlockPos(x * 16, 0, y * 16));
 
         // if (progress < 0) progress = 0;
         // if (progress > 1) progress = 1;

@@ -11,8 +11,6 @@ import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.WorldRenderer.ChunkInfo;
 import net.minecraft.client.render.chunk.ChunkBuilder.BuiltChunk;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3d;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,7 +54,7 @@ public abstract class WorldRendererMixin {
 
         matrices.push();
 
-        AnimatedChunks.getInstance().animator.animate(matrices, new BlockPos(chunk.getOrigin().getX(), 0, chunk.getOrigin().getZ()), new Vector3d(playerX, playerY, playerZ));
+        // AnimatedChunks.getInstance().animator.animate(matrices, new BlockPos(chunk.getOrigin().getX(), 0, chunk.getOrigin().getZ()), new Vector3d(playerX, playerY, playerZ));
 
         // if (getProgressManager().isChunkLoaded(x, 0, z)) {
         //     float progress = getProgressManager().getChunkProgress(x, 0, z);
