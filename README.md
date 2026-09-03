@@ -2,7 +2,7 @@
 
 # Animated Chunks
 
-[![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-lightyellow](https://fabricmc.net)
+[![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-lightyellow)](https://fabricmc.net)
 [![Modrinth](https://img.shields.io/modrinth/dt/animated-chunks?logo=modrinth)](https://modrinth.com/mod/animated-chunks)
 [![CurseForge](https://cf.way2muchnoise.eu/full_678609_downloads.svg)](https://curseforge.com/minecraft/mc-mods/animated-chunks)
 
