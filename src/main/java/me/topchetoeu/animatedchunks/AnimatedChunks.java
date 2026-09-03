@@ -107,12 +107,12 @@ public final class AnimatedChunks implements ClientModInitializer, ModMenuApi {
     }
 
     public AnimatedChunks() {
-        var eases = new Manager<>(new Descriptor<Ease>(x -> 1, "default")
+        var eases = new Manager<>(new Descriptor<Ease>(() -> "t = 1;", "default")
             .author("TopchetoEU")
             .description("Ends the animation as soon as it has started.")
             .displayName("No animation")
         );
-        var animations = new Manager<>(new Descriptor<Animation>((a, b, c, d, e, f, g, h) -> {}, "default")
+        var animations = new Manager<>(new Descriptor<Animation>(() -> ";", "default")
             .author("TopchetoEU")
             .description("Does nothing.")
             .displayName("No animation")
