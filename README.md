@@ -2,6 +2,8 @@
 
 # Animated Chunks
 
+**Abandoned, go use [https://modrinth.com/mod/chunks-fade-in](https://modrinth.com/mod/chunks-fade-in)**
+
 [![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-lightyellow)](https://fabricmc.net)
 [![Modrinth](https://img.shields.io/modrinth/dt/animated-chunks?logo=modrinth)](https://modrinth.com/mod/animated-chunks)
 [![CurseForge](https://cf.way2muchnoise.eu/full_678609_downloads.svg)](https://curseforge.com/minecraft/mc-mods/animated-chunks)
